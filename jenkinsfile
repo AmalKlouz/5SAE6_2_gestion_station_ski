@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Récupérer le code depuis le dépôt Git
+                git url: 'https://github.com/AmalKlouz/5SAE6_5_gestion_station_ski', branch: 'main'
+            }
+        }
+        stage('Build') {
+            steps {
+                // Construire le projet avec Maven
+                sh 'mvn clean package'
+            }
+        }
+        stage('Test') {
+            steps {
+                // Lancer les tests unitaires avec Maven
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // Exemple de déploiement (personnaliser selon ton contexte)
+                sh 'echo "Déploiement terminé"'
+            }
+        }
+    }
+
+    post {
+        always {
+            // Actions à exécuter après chaque build, succès ou échec
+            archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
+        }
+        success {
+            // Actions à exécuter en cas de succès
+            echo 'Build réussi !'
+        }
+        failure {
+            // Actions à exécuter en cas d'échec
+            echo 'Le build a échoué.'
+        }
+    }
+}
