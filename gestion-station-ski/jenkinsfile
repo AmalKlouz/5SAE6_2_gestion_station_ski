@@ -1,45 +1,64 @@
-pipeline {
+pipeline{
     agent any
+    stages{
+        stage('webhook'){
+            steps{
+                echo 'succesfull build with webhook and ngroK;)'
+            }
+        }
+        stage('MVN Build'){
+            steps{
+               sh 'mvn clean install'
+               sh 'mvn -version'
 
-    stages {
-        stage('Checkout') {
-            steps {
-                // Récupérer le code depuis le dépôt Git
-                git url: 'https://github.com/AmalKlouz/5SAE6_5_gestion_station_ski', branch: 'main'
             }
         }
-        stage('Build') {
-            steps {
-                // Construire le projet avec Maven
-                sh 'mvn clean package'
-            }
+
+        stage('MVN Sonarqube'){
+            steps{
+               sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=Amal123456789@ -Dmaven.test.skip=true'
+ ]            }
         }
-        stage('Test') {
-            steps {
-                // Lancer les tests unitaires avec Maven
+        stage('MVN Test'){
+              steps{
                 sh 'mvn test'
+                junit(testResults: 'target/surefire-reports/*.xml', allowEmptyResults : true)
+              }
+        }
+        stage('Collect JaCoCo Coverage') {
+               steps{
+                 jacoco(execPattern: '**/target/jacoco.exec')
             }
         }
-        stage('Deploy') {
-            steps {
-                // Exemple de déploiement (personnaliser selon ton contexte)
-                sh 'echo "Déploiement terminé"'
-            }
-        }
-    }
 
-    post {
-        always {
-            // Actions à exécuter après chaque build, succès ou échec
-            archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
-        }
-        success {
-            // Actions à exécuter en cas de succès
-            echo 'Build réussi !'
-        }
-        failure {
-            // Actions à exécuter en cas d'échec
-            echo 'Le build a échoué.'
-        }
+
+       
+       stage('Build Docker Image') {
+                steps {
+                    script {
+                          sh 'docker build -t AmalKlouz/5SAE6_5_gestion_station_ski .'
+                       }
+                   }
+               }
+
+
+      stage('push Docker Image') {
+            stage('Deploy with Docker Compose') {
+               steps {
+                  script {
+                   sh 'docker-compose up -d'
+                   }
+          }
+      }
+      stage('Email') {
+                  steps {
+                      script {
+                          emailext subject: 'Build Status',
+                                   body: 'The build and deployment are completed.',
+                                   to: 'amal.klouz@esprit.tn',
+                                   attachLog: true
+                      }
+                  }
+              }
     }
 }

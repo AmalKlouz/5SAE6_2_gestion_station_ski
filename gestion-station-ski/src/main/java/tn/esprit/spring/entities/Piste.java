@@ -32,5 +32,10 @@ public class Piste implements Serializable {
 
 	@ManyToMany(mappedBy= "pistes")
 	Set<Skier> skiers;
-	
+
+    public Piste(long l, String s, int i) {
+    }
+
+	public Piste(long l, String italienne, String rouge, int i, String s) {
+	}
 }

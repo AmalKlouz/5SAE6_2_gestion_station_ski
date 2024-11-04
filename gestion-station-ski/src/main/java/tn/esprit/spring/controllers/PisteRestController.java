@@ -3,6 +3,8 @@ package tn.esprit.spring.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.spring.entities.Piste;
 import tn.esprit.spring.services.IPisteServices;
@@ -14,8 +16,7 @@ import java.util.List;
 @RequestMapping("/piste")
 @RequiredArgsConstructor
 public class PisteRestController {
-
-    private final IPisteServices pisteServices;
+    IPisteServices pisteServices;
 
     @Operation(description = "Add Piste")
     @PostMapping("/add")
@@ -39,6 +40,6 @@ public class PisteRestController {
     public void deleteById(@PathVariable("id-piste") Long numPiste){
         pisteServices.removePiste(numPiste);
     }
-    
+
 
 }
