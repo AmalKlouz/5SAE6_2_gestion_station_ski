@@ -2,44 +2,40 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('GIT') {
             steps {
-                // Récupérer le code depuis le dépôt Git
-                git url: 'https://github.com/AmalKlouz/5SAE6_5_gestion_station_ski', branch: 'main'
+                git branch: 'INESRDISSI-5SAE7-G2',
+                    url: 'https://github.com/SalemTheProgrammer/5SAE-G2-SKI.git'
             }
         }
-        stage('Build') {
+        
+        stage('Compile Stage') {
             steps {
-                // Construire le projet avec Maven
-                sh 'mvn clean package'
+                sh 'mvn clean compile'
             }
         }
-        stage('Test') {
-            steps {
-                // Lancer les tests unitaires avec Maven
-                sh 'mvn test'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                // Exemple de déploiement (personnaliser selon ton contexte)
-                sh 'echo "Déploiement terminé"'
-            }
-        }
-    }
 
-    post {
-        always {
-            // Actions à exécuter après chaque build, succès ou échec
-            archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
-        }
-        success {
-            // Actions à exécuter en cas de succès
-            echo 'Build réussi !'
-        }
-        failure {
-            // Actions à exécuter en cas d'échec
-            echo 'Le build a échoué.'
-        }
+
+
+stage('Run Tests') { // Nouveau stage pour exécuter les tests
+    steps {
+        sh 'mvn -Dtest=InstructorServicesImplTest test' // Exécute spécifiquement le test InstructorServicesImplTest
+    }
+}
+
+  stage('SonarQube') {
+            steps {
+             sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=Sonarsonar1* -Dmaven.test.skip=true';
+           }
+       }
+        
+
+      stage('Nexus') {
+            steps {
+             sh 'mvn deploy -Dmaven.test.skip=true';
+           }
+       }
+           
+
     }
 }

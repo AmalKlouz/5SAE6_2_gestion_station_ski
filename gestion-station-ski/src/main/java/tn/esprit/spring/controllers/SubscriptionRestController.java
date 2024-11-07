@@ -17,6 +17,7 @@ import java.util.Set;
 @RequestMapping("/subscription")
 @RequiredArgsConstructor
 public class SubscriptionRestController {
+    /*
 
     private final ISubscriptionServices subscriptionServices;
 
@@ -46,6 +47,6 @@ public class SubscriptionRestController {
     public List<Subscription> getSubscriptionsByDates(@PathVariable("date1") LocalDate startDate,
                                                       @PathVariable("date2") LocalDate endDate){
         return subscriptionServices.retrieveSubscriptionsByDates(startDate, endDate);
-    }
+    }*/
 
 }
