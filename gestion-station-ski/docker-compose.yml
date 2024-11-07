@@ -11,7 +11,7 @@ services:
       - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
     ports:
       - "8089:8089"
-    image: gestion-station-ski:1.0
+    image: amal004/gestion-station-ski:1.0
     restart: unless-stopped
     depends_on:
       - mysqldb
