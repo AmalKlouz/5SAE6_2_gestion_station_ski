@@ -1,0 +1,59 @@
+<div class="container">
+    <h2>Add New Course</h2>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="level">Level:</label>
+        <input type="number" id="level" [(ngModel)]="newCourse.level" name="level" class="form-control" required>
+      </div>
+  
+      <div class="form-group">
+        <label for="typeCourse">Type:</label>
+        <select id="typeCourse" [(ngModel)]="newCourse.typeCourse" name="typeCourse" class="form-control" required>
+          <option *ngFor="let type of courseTypes" [value]="type">{{type}}</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label for="support">Support:</label>
+        <select id="support" [(ngModel)]="newCourse.support" name="support" class="form-control" required>
+          <option *ngFor="let support of supportTypes" [value]="support">{{support}}</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label for="price">Price:</label>
+        <input type="number" id="price" [(ngModel)]="newCourse.price" name="price" class="form-control" required>
+      </div>
+  
+      <div class="form-group">
+        <label for="timeSlot">Time Slot:</label>
+        <input type="number" id="timeSlot" [(ngModel)]="newCourse.timeSlot" name="timeSlot" class="form-control" required>
+      </div>
+  
+      <button type="submit" class="btn btn-primary">Add Course</button>
+    </form>
+  
+    <h2 class="mt-4">Course List</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Level</th>
+          <th>Type</th>
+          <th>Support</th>
+          <th>Price</th>
+          <th>Time Slot</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let course of courses">
+          <td>{{course.numCourse}}</td>
+          <td>{{course.level}}</td>
+          <td>{{course.typeCourse}}</td>
+          <td>{{course.support}}</td>
+          <td>{{course.price}}</td>
+          <td>{{course.timeSlot}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
