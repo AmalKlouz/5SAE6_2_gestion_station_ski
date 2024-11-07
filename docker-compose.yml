@@ -46,7 +46,7 @@ services:
     networks:
       - backend-network
     depends_on:
-      backend
+      - backend
     restart: unless-stopped
 
 volumes:
