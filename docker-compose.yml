@@ -36,11 +36,6 @@ services:
     networks:
       - backend-network
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8089/api/actuator/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   frontend:
     build:
@@ -51,8 +46,7 @@ services:
     networks:
       - backend-network
     depends_on:
-      backend:
-        condition: service_healthy
+      backend
     restart: unless-stopped
 
 volumes:
