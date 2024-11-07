@@ -63,17 +63,13 @@
 			<artifactId>mockito-core</artifactId>
 		</dependency>
 	</dependencies>
-<distributionManagement>
-        <repository>
-            <id>nexus-releases</id>
-            <url>http://192.168.33.10:8081/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <url>http://192.168.33.10:8081/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
+	<distributionManagement>
+	        <repository>
+	            <id>deploymentRepo</id>
+	            <name>amal klouz 5SAE5</name>
+	            <url>http://192.168.56.44:8081/repository/maven-releases/</url>
+	        </repository>
+	    </distributionManagement>
 	<build>
 		<plugins>
 			<!-- Maven compiler plugin to specify Java version -->
