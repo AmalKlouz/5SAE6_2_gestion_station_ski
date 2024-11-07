@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping(&quot;/course&quot;)
 <span class="fc" id="L16">@RequiredArgsConstructor</span>
+@CrossOrigin(&quot;*&quot;)
 public class CourseRestController {
     
     private final ICourseServices courseServices;
@@ -21,25 +22,25 @@ public class CourseRestController {
     @Operation(description = &quot;Add Course&quot;)
     @PostMapping(&quot;/add&quot;)
     public Course addCourse(@RequestBody Course course){
-<span class="fc" id="L24">        return  courseServices.addCourse(course);</span>
+<span class="fc" id="L25">        return  courseServices.addCourse(course);</span>
     }
 
     @Operation(description = &quot;Retrieve all Courses&quot;)
     @GetMapping(&quot;/all&quot;)
     public List&lt;Course&gt; getAllCourses(){
-<span class="fc" id="L30">        return courseServices.retrieveAllCourses();</span>
+<span class="fc" id="L31">        return courseServices.retrieveAllCourses();</span>
     }
 
     @Operation(description = &quot;Update Course &quot;)
     @PutMapping(&quot;/update&quot;)
     public Course updateCourse(@RequestBody Course course){
-<span class="fc" id="L36">        return  courseServices.updateCourse(course);</span>
+<span class="fc" id="L37">        return  courseServices.updateCourse(course);</span>
     }
 
     @Operation(description = &quot;Retrieve Course by Id&quot;)
     @GetMapping(&quot;/get/{id-course}&quot;)
     public Course getById(@PathVariable(&quot;id-course&quot;) Long numCourse){
-<span class="fc" id="L42">        return courseServices.retrieveCourse(numCourse);</span>
+<span class="fc" id="L43">        return courseServices.retrieveCourse(numCourse);</span>
     }
 
 }
