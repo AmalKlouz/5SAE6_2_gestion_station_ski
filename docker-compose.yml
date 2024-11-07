@@ -1,0 +1,42 @@
+version: '3'
+services:
+  gestion-station-ski:
+    build: .
+    container_name: gestion-station-ski
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/stationSki?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
+    ports:
+      - "8089:8089"
+    image: gestion-station-ski:1.0
+    restart: unless-stopped
+    depends_on:
+      - mysqldb
+    networks:
+      - spring-mysql
+  mysqldb:
+    image: mysql:8.0
+    container_name: mysqldb
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_DATABASE=stationSki
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - spring-mysql
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+networks:
+  spring-mysql:
+    driver: bridge
+volumes:
+  mysql-data:
