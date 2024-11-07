@@ -1,64 +1,25 @@
-pipeline{
-    agent any
-    stages{
-        stage('webhook'){
-            steps{
-                echo 'succesfull build with webhook and ngroK;)'
-            }
-        }
-        stage('MVN Build'){
-            steps{
-               sh 'mvn clean install'
-               sh 'mvn -version'
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
 
-            }
-        }
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-22.04"
 
-        stage('MVN Sonarqube'){
-            steps{
-               sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=Amal123456789@ -Dmaven.test.skip=true'
- ]            }
-        }
-        stage('MVN Test'){
-              steps{
-                sh 'mvn test'
-                junit(testResults: 'target/surefire-reports/*.xml', allowEmptyResults : true)
-              }
-        }
-        stage('Collect JaCoCo Coverage') {
-               steps{
-                 jacoco(execPattern: '**/target/jacoco.exec')
-            }
-        }
+  config.ssh.timeout = 600
+  config.vm.provision_timeout = 600
 
+  config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.network "forwarded_port", guest: 80, host: 2000
 
-       
-       stage('Build Docker Image') {
-                steps {
-                    script {
-                          sh 'docker build -t AmalKlouz/5SAE6_5_gestion_station_ski .'
-                       }
-                   }
-               }
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "6000"
+    vb.gui = true
+    vb.cpus = 4
+  end
 
-
-      stage('push Docker Image') {
-            stage('Deploy with Docker Compose') {
-               steps {
-                  script {
-                   sh 'docker-compose up -d'
-                   }
-          }
-      }
-      stage('Email') {
-                  steps {
-                      script {
-                          emailext subject: 'Build Status',
-                                   body: 'The build and deployment are completed.',
-                                   to: 'amal.klouz@esprit.tn',
-                                   attachLog: true
-                      }
-                  }
-              }
-    }
-}
+  # Set the Jenkins home directory to /var/lib/jenkins
+  config.vm.provision "shell", inline: <<-SHELL
+    export JENKINS_HOME=/var/lib/jenkins
+    sudo mkdir -p $JENKINS_HOME
+    sudo chown -R vagrant:vagrant $JENKINS_HOME
+  SHELL
+end

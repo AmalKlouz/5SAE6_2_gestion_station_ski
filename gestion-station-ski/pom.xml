@@ -63,6 +63,16 @@
 			<artifactId>mockito-core</artifactId>
 		</dependency>
 	</dependencies>
+<distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <url>http://192.168.33.10:8081/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <url>http://192.168.33.10:8081/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 	<build>
 		<plugins>
