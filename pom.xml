@@ -54,7 +54,13 @@
 
 
     </dependencies>
-
+         <distributionManagement>
+	        <repository>
+	            <id>deploymentRepo</id>
+	            <name>amal klouz 5SAE6</name>
+	            <url>http://192.168.56.44:8081/repository/maven-releases/</url>
+	        </repository>
+	    </distributionManagement>
     <build>
         <plugins>
             <plugin>
