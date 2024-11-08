@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:5.7
+    restart: unless-stopped
+    container_name: mysql-container
+    ports:
+      - "3306:3306"  #port mysql
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+  spring-boot-app:
+    build:
+      context:  .
+      dockerfile: Dockerfile
+    container_name: spring-boot-container
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/stationSki?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ''
+    ports:
+      - "8089:8089"
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+volumes:
+  mysql_data:
+
+networks:
+  app-network:
+    driver: bridge
